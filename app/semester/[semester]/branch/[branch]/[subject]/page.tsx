@@ -64,16 +64,16 @@ export default async function BranchSubjectPage({
             href={`https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-4 rounded-2xl bg-slate-950 px-5 py-4 text-white transition hover:bg-slate-800"
+            className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-slate-950 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
           >
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white/10">
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-700 ring-1 ring-slate-200">
               <ExternalLink size={19} />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-black">Open {subject.code} in Google Drive</p>
-              <p className="mt-1 truncate text-xs text-slate-400">Search study material for {subject.name}</p>
+              <p className="mt-1 truncate text-xs text-slate-500">Search study material for {subject.name}</p>
             </div>
-            <ArrowRight className="text-slate-400 transition group-hover:translate-x-1" size={18} />
+            <ArrowRight className="text-slate-400 transition group-hover:translate-x-1 group-hover:text-slate-950" size={18} />
           </a>
         </div>
 
