@@ -15,6 +15,7 @@ export type Subject = {
   units: number;
   resources: ResourceType[];
   kind: "theory" | "lab" | "other";
+  driveUrl?: string;
 };
 
 export const semesters = [
@@ -41,11 +42,11 @@ export const branches: Branch[] = [
 
 const defaultResources: ResourceType[] = ["Notes", "Lab Notes", "Important Questions", "PYQs"];
 
-function makeSubject(code: string, name: string, kind: Subject["kind"], description: string): Subject {
+function makeSubject(code: string, name: string, kind: Subject["kind"], description: string, driveUrl?: string): Subject {
   return {
     slug: name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
     code, name, shortName: name, description,
-    units: kind === "lab" ? 0 : 5, kind, resources: defaultResources,
+    units: kind === "lab" ? 0 : 5, kind, resources: defaultResources, driveUrl,
   };
 }
 
