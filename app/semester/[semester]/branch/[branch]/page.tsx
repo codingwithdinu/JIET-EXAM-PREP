@@ -77,18 +77,23 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
 
                   <div className="mt-5 grid gap-5 md:grid-cols-2">
                     {grouped.map((subject) => (
-                      <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-                        <Link href={`/semester/${number}/branch/${branch.slug}/${subject.slug}`} className="group block">
-                          <div className="flex items-start justify-between gap-5">
-                            <div className="min-w-0">
-                              <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
-                              <h4 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h4>
-                              <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
-                            </div>
-                            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white"><ArrowRight size={18} /></div>
-                          </div>
-                        </Link>
-                        <div className="mt-6 border-t border-slate-100 pt-5">
+                      <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
+                        <div className="flex items-start justify-between gap-5">
+                          <Link href={`/semester/${number}/branch/${branch.slug}/${subject.slug}`} className="group min-w-0 flex-1">
+                            <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
+                            <h4 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h4>
+                            <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
+                            <p className="mt-4 text-xs font-bold text-slate-400">Notes · Lab Notes · Important Questions · PYQs</p>
+                          </Link>
+                          <a
+                            href={`https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Open ${subject.name} in Google Drive`}
+                            className="group/drive grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white transition hover:scale-105 hover:bg-slate-800"
+                          >
+                            <ArrowRight size={18} className="transition group-hover/drive:translate-x-0.5" />
+                          </a>
                         </div>
                       </div>
                     ))}
