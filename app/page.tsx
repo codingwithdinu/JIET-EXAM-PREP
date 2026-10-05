@@ -48,47 +48,62 @@ export default function Home() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#f7f8fc] text-slate-950">
-      <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl">
-        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 lg:px-8">
-          <div className="flex items-center gap-3">
-            <div className="grid h-10 w-10 place-items-center rounded-2xl bg-slate-950 text-white shadow-lg shadow-slate-950/10">
-              <GraduationCap size={21} />
+      <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-2xl">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
+          <a href="#" className="group flex items-center gap-3">
+            <div className="relative grid h-11 w-11 place-items-center overflow-hidden rounded-[15px] bg-slate-950 text-white shadow-lg shadow-slate-950/15 transition duration-300 group-hover:-rotate-2 group-hover:scale-105">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-transparent to-violet-500/30" />
+              <GraduationCap size={22} className="relative" strokeWidth={2.4} />
             </div>
-            <div>
-              <p className="text-sm font-black tracking-tight">JIET Exam Prep</p>
-              <p className="text-[11px] font-medium text-slate-500">Study smarter. Score better.</p>
+            <div className="leading-none">
+              <p className="text-[15px] font-black tracking-[-0.02em] text-slate-950">JIET Exam Prep</p>
+              <div className="mt-1.5 flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                <p className="text-[10px] font-bold uppercase tracking-[0.13em] text-slate-400">Student Study Hub</p>
+              </div>
             </div>
+          </a>
+
+          <div className="hidden items-center rounded-2xl border border-slate-200/80 bg-slate-50/80 p-1 md:flex">
+            <a href="#semesters" className="rounded-xl bg-white px-4 py-2.5 text-[13px] font-extrabold text-slate-950 shadow-sm ring-1 ring-slate-200/70 transition hover:-translate-y-px">
+              Semesters
+            </a>
+            <a href="#resources" className="rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-500 transition hover:bg-white hover:text-slate-950">
+              Resources
+            </a>
+            <a href="#subjects" className="rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-500 transition hover:bg-white hover:text-slate-950">
+              Subjects
+            </a>
           </div>
 
-          <div className="hidden items-center gap-7 text-sm font-semibold text-slate-600 md:flex">
-            <a href="#semesters" className="transition hover:text-slate-950">Semesters</a>
-            <a href="#resources" className="transition hover:text-slate-950">Resources</a>
-            <a href="#subjects" className="transition hover:text-slate-950">Subjects</a>
-          </div>
-
-          <div className="hidden items-center gap-3 md:flex">
-            <button className="rounded-xl px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100">
+          <div className="hidden items-center gap-2.5 md:flex">
+            <button className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-[13px] font-extrabold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
               Admin
             </button>
-            <button className="rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-slate-950/15 transition hover:-translate-y-0.5">
-              Get Started
-            </button>
+            <a href="#semesters" className="group inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-[13px] font-extrabold text-white shadow-lg shadow-slate-950/15 transition hover:-translate-y-0.5 hover:bg-slate-800">
+              Start studying
+              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+            </a>
           </div>
 
           <button
             onClick={() => setMobileMenu((v) => !v)}
-            className="rounded-xl border border-slate-200 p-2.5 md:hidden"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50 md:hidden"
             aria-label="Toggle menu"
           >
             {mobileMenu ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
         {mobileMenu && (
-          <div className="border-t border-slate-200 px-5 py-4 md:hidden">
-            <div className="grid gap-2 text-sm font-semibold text-slate-700">
-              <a onClick={() => setMobileMenu(false)} href="#semesters" className="rounded-lg px-3 py-2 hover:bg-slate-100">Semesters</a>
-              <a onClick={() => setMobileMenu(false)} href="#resources" className="rounded-lg px-3 py-2 hover:bg-slate-100">Resources</a>
-              <a onClick={() => setMobileMenu(false)} href="#subjects" className="rounded-lg px-3 py-2 hover:bg-slate-100">Subjects</a>
+          <div className="border-t border-slate-200/80 bg-white px-5 py-4 shadow-xl shadow-slate-950/5 md:hidden">
+            <div className="grid gap-1.5">
+              <a onClick={() => setMobileMenu(false)} href="#semesters" className="rounded-xl px-4 py-3 text-sm font-extrabold text-slate-800 transition hover:bg-slate-50">Semesters</a>
+              <a onClick={() => setMobileMenu(false)} href="#resources" className="rounded-xl px-4 py-3 text-sm font-extrabold text-slate-800 transition hover:bg-slate-50">Resources</a>
+              <a onClick={() => setMobileMenu(false)} href="#subjects" className="rounded-xl px-4 py-3 text-sm font-extrabold text-slate-800 transition hover:bg-slate-50">Subjects</a>
+              <div className="mt-2 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
+                <button className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-extrabold text-slate-700">Admin</button>
+                <a onClick={() => setMobileMenu(false)} href="#semesters" className="rounded-xl bg-slate-950 px-4 py-3 text-center text-sm font-extrabold text-white">Start studying</a>
+              </div>
             </div>
           </div>
         )}
