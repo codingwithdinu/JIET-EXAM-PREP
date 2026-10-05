@@ -83,7 +83,7 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
                             <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
                             <h4 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h4>
                             <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
-                            <p className="mt-4 text-xs font-bold text-slate-400">Notes · Lab Notes · Important Questions · PYQs</p>
+                            <p className="mt-4 text-xs font-bold text-slate-400">Notes · Important Questions · PYQs</p>
                           </Link>
                           <a
                             href={`https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
