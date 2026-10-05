@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, FileQuestion, FileText, FlaskConical, GraduationCap, LibraryBig } from "lucide-react";
-import ResourceButtons from "@/components/ResourceButtons";
 import { getSubject, getSubjects, semesters } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -49,26 +48,6 @@ export default async function SubjectPage({ params }: { params: Promise<{ semest
       </header>
 
       <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-        <div className="rounded-3xl bg-slate-950 p-6 text-white sm:p-8">
-          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-400">Subject resources</p>
-              <h2 className="mt-2 text-2xl font-black">Prepare {subject.code} your way</h2>
-              <p className="mt-2 text-sm text-slate-400">{subject.units} units · Notes · Lab Notes · Important Questions · PYQs</p>
-            </div>
-            <Link href={`/semester/${semesterNumber}`} className="inline-flex w-fit items-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-black text-slate-950"><ArrowLeft size={15} /> All subjects</Link>
-          </div>
-          <div className="mt-6 max-w-3xl"><ResourceButtons semester={semesterNumber} subject={subject.slug} /></div>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {resourceMeta.map((resource) => {
-            const Icon = resource.icon;
-            const key = resource.title === "Important Questions" ? "important-questions" : resource.title === "Lab Notes" ? "lab-notes" : resource.title === "PYQs" ? "pyq" : "notes";
-            return (
-              <Link href={`/semester/${semesterNumber}/${subject.slug}/${key}`} key={resource.title} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-                <div className="flex items-start justify-between">
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-slate-50 ring-1 ring-slate-200"><Icon size={21} /></div>
                   <ArrowRight size={18} className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-slate-950" />
                 </div>
                 <h3 className="mt-6 text-lg font-black">{resource.title}</h3>
