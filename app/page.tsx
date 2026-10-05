@@ -29,10 +29,6 @@ const semesters = Array.from({ length: 8 }, (_, i) => ({
 export default function Home() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [query, setQuery] = useState("");
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return q;
-  }, [query]);
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#f7f8fc] text-slate-950">
