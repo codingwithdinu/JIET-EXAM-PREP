@@ -68,19 +68,6 @@ export default async function SubjectPage({
           </a>
         </div>
 
-        <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-7">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Unit roadmap</p>
-          <h2 className="mt-2 text-2xl font-black">Study unit by unit</h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {Array.from({ length: subject.units }, (_, index) => (
-              <div key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <p className="text-xs font-black text-slate-400">UNIT {index + 1}</p>
-                <p className="mt-2 text-sm font-black">Content will be linked</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         <Link href={`/semester/${semesterNumber}`} className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-950">
           <ArrowLeft size={15} /> Back to {semester.title}
         </Link>
