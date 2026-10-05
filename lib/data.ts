@@ -1,4 +1,4 @@
-export type ResourceType = "Syllabus" | "Notes" | "Important Questions" | "PYQs" | "Practicals";
+export type ResourceType = "Notes" | "Lab Notes" | "Important Questions" | "PYQs";
 
 export type Subject = {
   slug: string;
@@ -21,7 +21,7 @@ export const semesters = [
   { number: 8, title: "Semester 8", description: "Final semester subjects, project and revision." },
 ];
 
-const defaultResources: ResourceType[] = ["Syllabus", "Notes", "Important Questions", "PYQs", "Practicals"];
+const defaultResources: ResourceType[] = ["Notes", "Lab Notes", "Important Questions", "PYQs"];
 
 export const subjectsBySemester: Record<number, Subject[]> = {
   1: [],
