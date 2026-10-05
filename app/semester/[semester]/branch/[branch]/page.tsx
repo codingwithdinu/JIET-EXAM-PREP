@@ -86,7 +86,7 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
                             <p className="mt-4 text-xs font-bold text-slate-400">Notes · Important Questions · PYQs</p>
                           </Link>
                           <a
-                            href={`https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
+                            href={subject.driveUrl ?? `https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={`Open ${subject.name} in Google Drive`}
