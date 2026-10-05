@@ -203,34 +203,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="resources" className="border-y border-slate-200/80 bg-white">
-        <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Everything in one place</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Study resources that match the exam</h2>
-          </div>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {resources.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.title} className="rounded-3xl border border-slate-200 bg-slate-50/70 p-6 transition hover:-translate-y-1 hover:bg-white hover:shadow-xl">
-                  <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white ring-1 ring-slate-200">
-                    <Icon size={20} />
-                  </div>
-                  <h3 className="mt-5 text-base font-black">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">{item.desc}</p>
-                  <button className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-slate-900">
-                    Explore <ArrowRight size={15} />
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      
-
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-8">
           <p>© 2026 JIET Exam Prep</p>
