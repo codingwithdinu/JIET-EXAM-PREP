@@ -59,23 +59,7 @@ export default async function BranchSubjectPage({
       </header>
 
       <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <a
-            href={`https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white px-5 py-4 text-slate-950 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
-          >
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-700 ring-1 ring-slate-200">
-              <ExternalLink size={19} />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-black">Open {subject.code} in Google Drive</p>
-              <p className="mt-1 truncate text-xs text-slate-500">Search study material for {subject.name}</p>
-            </div>
-            <ArrowRight className="text-slate-400 transition group-hover:translate-x-1 group-hover:text-slate-950" size={18} />
-          </a>
-        </div>
+
 
         <Link href={`/semester/${number}/branch/${branch.slug}`} className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-950">
           <ArrowLeft size={15} /> Back to {branch.code}
