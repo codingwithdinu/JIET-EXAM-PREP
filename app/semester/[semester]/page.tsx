@@ -8,8 +8,9 @@ export function generateStaticParams() {
 
 export default async function SemesterPage({ params }: { params: Promise<{ semester: string }> }) {
   const { semester: semesterParam } = await params;
-  const number = Number(semesterParam);
-  const semester = semesters.find((item) => item.number === number);
+  const isCommonFoundation = semesterParam === "1-2";
+  const number = isCommonFoundation ? 1 : Number(semesterParam);
+  const semester = isCommonFoundation ? { number: 0, title: "Semester 1 & 2", description: "Common first-year syllabus for Semester 1 and Semester 2." } : semesters.find((item) => item.number === number);
 
   if (!semester) {
     return (
@@ -22,9 +23,9 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
     );
   }
 
-  const hasBranches = number >= 3;
+  const hasBranches = !isCommonFoundation && number >= 3;
   const branches = getBranches();
-  const subjects = getSubjects(number);
+  const subjects = isCommonFoundation ? [...getSubjects(1), ...getSubjects(2)] : getSubjects(number);
 
   return (
     <main className="min-h-screen bg-[#f7f8fc] text-slate-950">
@@ -95,7 +96,7 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
               <div className="mt-8 grid gap-5 md:grid-cols-2">
                 {subjects.map((subject) => (
                   <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
-                    <Link href={`/semester/${number}/${subject.slug}`} className="group block">
+                    <Link href={`/semester/${isCommonFoundation ? 1 : number}/${subject.slug}`} className="group block">
                       <div className="flex items-start justify-between gap-5">
                         <div>
                           <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
