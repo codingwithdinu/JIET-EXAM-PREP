@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, FileQuestion, FileText, FlaskConical, GraduationCap, LibraryBig } from "lucide-react";
-import ResourceButtons from "@/components/ResourceButtons";
 import { getBranches, getSubject, getSubjects, semesters } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -57,22 +56,6 @@ export default async function BranchSubjectPage({ params }: { params: Promise<{ 
       </header>
 
       <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-        <div className="rounded-3xl bg-slate-950 p-6 text-white sm:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-300">Subject resources</p>
-          <h2 className="mt-2 text-2xl font-black">Prepare {subject.code}</h2>
-          <p className="mt-2 text-sm text-slate-400">{subject.units} units · Branch-specific study material</p>
-          <div className="mt-6 max-w-4xl">
-            <ResourceButtons semester={number} branch={branch.slug} subject={subject.slug} />
-          </div>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {resources.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link key={item.key} href={`/semester/${number}/${branch.slug}/${subject.slug}/${item.key}`} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-                <div className="flex items-start justify-between">
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-slate-50 ring-1 ring-slate-200"><Icon size={21} /></div>
                   <ArrowRight size={18} className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-slate-950" />
                 </div>
                 <h3 className="mt-6 text-lg font-black">{item.title}</h3>
