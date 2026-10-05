@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, FileQuestion, GraduationCap, LibraryBig } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, GraduationCap } from "lucide-react";
+import ResourceButtons from "@/components/ResourceButtons";
 import { getSubjects, semesters } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -43,8 +44,16 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
         </div>
       </header>
 
-      <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8">
-        <div className="flex items-end justify-between">
+      <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+          <div className="mb-4">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Study resources</p>
+            <h2 className="mt-1 text-xl font-black">What do you want to study?</h2>
+          </div>
+          <ResourceButtons semester={number} />
+        </div>
+
+        <div className="mt-12 flex items-end justify-between">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Subjects</p>
             <h2 className="mt-2 text-3xl font-black tracking-tight">Choose a subject</h2>
@@ -55,33 +64,30 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
         {subjects.length ? (
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {subjects.map((subject) => (
-              <Link
-                key={subject.slug}
-                href={`/semester/${number}/${subject.slug}`}
-                className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
-              >
-                <div className="flex items-start justify-between gap-5">
-                  <div>
-                    <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
-                    <h3 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
+              <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
+                <Link href={`/semester/${number}/${subject.slug}`} className="group block">
+                  <div className="flex items-start justify-between gap-5">
+                    <div>
+                      <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
+                      <h3 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
+                    </div>
+                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-105">
+                      <ArrowRight size={18} />
+                    </div>
                   </div>
-                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-105">
-                    <ArrowRight size={18} />
-                  </div>
+                </Link>
+                <div className="mt-6 border-t border-slate-100 pt-5">
+                  <ResourceButtons semester={number} subject={subject.slug} />
                 </div>
-                <div className="mt-6 flex flex-wrap gap-2 border-t border-slate-100 pt-5">
-                  <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-1.5 text-xs font-bold text-slate-600"><BookOpen size={13} /> {subject.units} Units</span>
-                  <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-1.5 text-xs font-bold text-slate-600"><FileQuestion size={13} /> Important Qs</span>
-                  <span className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-1.5 text-xs font-bold text-slate-600"><LibraryBig size={13} /> PYQs</span>
-                </div>
-              </Link>
+              </div>
             ))}
           </div>
         ) : (
           <div className="mt-8 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
-            <h3 className="text-lg font-black">Content coming soon</h3>
-            <p className="mt-2 text-sm text-slate-500">Subjects for this semester will be added here.</p>
+            <BookOpen className="mx-auto text-slate-300" size={30} />
+            <h3 className="mt-4 text-lg font-black">Content coming soon</h3>
+            <p className="mt-2 text-sm text-slate-500">Subjects and their resources for this semester will be added here.</p>
           </div>
         )}
       </section>
