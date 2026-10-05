@@ -15,36 +15,23 @@ import {
   Target,
   X,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 const semesters = Array.from({ length: 8 }, (_, i) => ({
   number: i + 1,
   label: `Semester ${i + 1}`,
 }));
 
-const resources = [
-  { icon: BookOpen, title: "Syllabus", desc: "Unit-wise syllabus for every subject." },
-  { icon: Target, title: "Important Questions", desc: "High-priority questions for exams." },
-  { icon: FileText, title: "Notes", desc: "Clean, focused notes and revision sheets." },
-  { icon: LibraryBig, title: "Previous Papers", desc: "Midterm and end-term PYQs." },
-];
 
-const featuredSubjects = [
-  { code: "DAA", name: "Design & Analysis of Algorithms", sem: "Semester 5" },
-  { code: "DIP", name: "Digital Image Processing", sem: "Semester 5" },
-  { code: "AML", name: "Applied Machine Learning", sem: "Semester 5" },
-  { code: "CD", name: "Compiler Design", sem: "Semester 5" },
-];
+
+
 
 export default function Home() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [query, setQuery] = useState("");
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return featuredSubjects;
-    return featuredSubjects.filter(
-      (s) => s.code.toLowerCase().includes(q) || s.name.toLowerCase().includes(q),
-    );
+    return q;
   }, [query]);
 
   return (
@@ -66,15 +53,7 @@ export default function Home() {
           </a>
 
           <div className="hidden items-center rounded-2xl border border-slate-200/80 bg-slate-50/80 p-1 md:flex">
-            <a href="#semesters" className="rounded-xl bg-white px-4 py-2.5 text-[13px] font-extrabold text-slate-950 shadow-sm ring-1 ring-slate-200/70 transition hover:-translate-y-px">
-              Semesters
-            </a>
-            <a href="#resources" className="rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-500 transition hover:bg-white hover:text-slate-950">
-              Resources
-            </a>
-            <a href="#subjects" className="rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-500 transition hover:bg-white hover:text-slate-950">
-              Subjects
-            </a>
+            <a href="#semesters" className="rounded-xl bg-white px-4 py-2.5 text-[13px] font-extrabold text-slate-950 shadow-sm ring-1 ring-slate-200/70 transition hover:-translate-y-px">Semesters</a>
           </div>
 
           <div className="hidden items-center gap-2.5 md:flex">
@@ -99,9 +78,7 @@ export default function Home() {
           <div className="border-t border-slate-200/80 bg-white px-5 py-4 shadow-xl shadow-slate-950/5 md:hidden">
             <div className="grid gap-1.5">
               <a onClick={() => setMobileMenu(false)} href="#semesters" className="rounded-xl px-4 py-3 text-sm font-extrabold text-slate-800 transition hover:bg-slate-50">Semesters</a>
-              <a onClick={() => setMobileMenu(false)} href="#resources" className="rounded-xl px-4 py-3 text-sm font-extrabold text-slate-800 transition hover:bg-slate-50">Resources</a>
-              <a onClick={() => setMobileMenu(false)} href="#subjects" className="rounded-xl px-4 py-3 text-sm font-extrabold text-slate-800 transition hover:bg-slate-50">Subjects</a>
-              <div className="mt-2 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
+                            <div className="mt-2 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
                 <button className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-extrabold text-slate-700">Admin</button>
                 <a onClick={() => setMobileMenu(false)} href="#semesters" className="rounded-xl bg-slate-950 px-4 py-3 text-center text-sm font-extrabold text-white">Start studying</a>
               </div>
@@ -256,39 +233,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="subjects" className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
-        <div className="flex items-end justify-between gap-6">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Popular right now</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Featured subjects</h2>
-          </div>
-          <button className="hidden items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold ring-1 ring-slate-200 sm:flex">
-            View all <ArrowRight size={15} />
-          </button>
-        </div>
-
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {filtered.length ? filtered.map((subject) => (
-            <Link href={`/semester/5/${subject.code === "DAA" ? "design-analysis-algorithms" : subject.code === "DIP" ? "digital-image-processing" : subject.code === "AML" ? "applied-machine-learning" : "compiler-design"}`} key={subject.code} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
-                  <h3 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h3>
-                  <p className="mt-2 text-sm font-medium text-slate-500">{subject.sem}</p>
-                </div>
-                <div className="grid h-11 w-11 place-items-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-105">
-                  <ChevronRight size={19} />
-                </div>
-              </div>
-            </Link>
-          )) : (
-            <div className="md:col-span-2 rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
-              <p className="font-bold">No matching subjects found.</p>
-              <p className="mt-1 text-sm text-slate-500">Try a different subject name or code.</p>
-            </div>
-          )}
-        </div>
-      </section>
+      
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-8">
