@@ -200,8 +200,21 @@ export default function Home() {
           <span className="hidden rounded-full bg-white px-3 py-2 text-xs font-bold text-slate-500 ring-1 ring-slate-200 sm:block">Sem 1 — Sem 8</span>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-          {semesters.map((sem) => (
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+          <Link
+            href="/semester/1-2"
+            className="group col-span-2 rounded-2xl border border-indigo-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-1 hover:border-indigo-300 hover:shadow-xl sm:col-span-2"
+          >
+            <span className="text-xs font-black text-indigo-500">01–02</span>
+            <div className="mt-8 flex items-end justify-between">
+              <div>
+                <span className="text-sm font-extrabold">Semester 1 & 2</span>
+                <p className="mt-1 text-xs font-semibold text-slate-400">Common syllabus</p>
+              </div>
+              <ArrowRight size={16} className="text-slate-400 transition group-hover:translate-x-1 group-hover:text-slate-950" />
+            </div>
+          </Link>
+          {semesters.slice(2).map((sem) => (
             <Link
               key={sem.number}
               href={`/semester/${sem.number}`}
