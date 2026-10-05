@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, GraduationCap } from "lucide-react";
 import ResourceButtons from "@/components/ResourceButtons";
-import { getSubjects, semesters } from "@/lib/data";
+import { getBranches, getSubjects, semesters } from "@/lib/data";
 
 export function generateStaticParams() {
   return semesters.map((semester) => ({ semester: String(semester.number) }));
@@ -11,7 +11,6 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
   const { semester: semesterParam } = await params;
   const number = Number(semesterParam);
   const semester = semesters.find((item) => item.number === number);
-  const subjects = getSubjects(number);
 
   if (!semester) {
     return (
@@ -23,6 +22,10 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
       </main>
     );
   }
+
+  const hasBranches = number >= 3;
+  const branches = getBranches();
+  const subjects = getSubjects(number);
 
   return (
     <main className="min-h-screen bg-[#f7f8fc] text-slate-950">
@@ -45,50 +48,81 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
       </header>
 
       <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-          <div className="mb-4">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Study resources</p>
-            <h2 className="mt-1 text-xl font-black">What do you want to study?</h2>
-          </div>
-          <ResourceButtons semester={number} />
-        </div>
+        {hasBranches ? (
+          <>
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Choose your branch</p>
+              <h2 className="mt-2 text-3xl font-black tracking-tight">Select branch to continue</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+                Every branch has its own subjects, Notes, Lab Notes, Important Questions and PYQs.
+              </p>
+            </div>
 
-        <div className="mt-12 flex items-end justify-between">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Subjects</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight">Choose a subject</h2>
-          </div>
-          <span className="rounded-full bg-white px-3 py-2 text-xs font-bold text-slate-500 ring-1 ring-slate-200">{subjects.length} subjects</span>
-        </div>
-
-        {subjects.length ? (
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {subjects.map((subject) => (
-              <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
-                <Link href={`/semester/${number}/${subject.slug}`} className="group block">
-                  <div className="flex items-start justify-between gap-5">
-                    <div>
-                      <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
-                      <h3 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h3>
-                      <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
-                    </div>
-                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-105">
-                      <ArrowRight size={18} />
-                    </div>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {branches.map((branch) => (
+                <Link
+                  key={branch.slug}
+                  href={`/semester/${number}/branch/${branch.slug}`}
+                  className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
+                >
+                  <span className="inline-flex rounded-full bg-indigo-50 px-3 py-1 text-xs font-black text-indigo-700">{branch.code}</span>
+                  <h3 className="mt-4 min-h-12 text-lg font-black leading-6">{branch.name}</h3>
+                  <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
+                    <span className="text-xs font-bold text-slate-500">Open branch</span>
+                    <ArrowRight size={17} className="text-slate-400 transition group-hover:translate-x-1 group-hover:text-slate-950" />
                   </div>
                 </Link>
-                <div className="mt-6 border-t border-slate-100 pt-5">
-                  <ResourceButtons semester={number} subject={subject.slug} />
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </>
         ) : (
-          <div className="mt-8 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
-            <BookOpen className="mx-auto text-slate-300" size={30} />
-            <h3 className="mt-4 text-lg font-black">Content coming soon</h3>
-            <p className="mt-2 text-sm text-slate-500">Subjects and their resources for this semester will be added here.</p>
-          </div>
+          <>
+            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+              <div className="mb-4">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Study resources</p>
+                <h2 className="mt-1 text-xl font-black">What do you want to study?</h2>
+              </div>
+              <ResourceButtons semester={number} />
+            </div>
+
+            <div className="mt-12 flex items-end justify-between">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Subjects</p>
+                <h2 className="mt-2 text-3xl font-black tracking-tight">Choose a subject</h2>
+              </div>
+              <span className="rounded-full bg-white px-3 py-2 text-xs font-bold text-slate-500 ring-1 ring-slate-200">{subjects.length} subjects</span>
+            </div>
+
+            {subjects.length ? (
+              <div className="mt-8 grid gap-5 md:grid-cols-2">
+                {subjects.map((subject) => (
+                  <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
+                    <Link href={`/semester/${number}/${subject.slug}`} className="group block">
+                      <div className="flex items-start justify-between gap-5">
+                        <div>
+                          <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
+                          <h3 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h3>
+                          <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
+                        </div>
+                        <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-105">
+                          <ArrowRight size={18} />
+                        </div>
+                      </div>
+                    </Link>
+                    <div className="mt-6 border-t border-slate-100 pt-5">
+                      <ResourceButtons semester={number} subject={subject.slug} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-8 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
+                <BookOpen className="mx-auto text-slate-300" size={30} />
+                <h3 className="mt-4 text-lg font-black">Content coming soon</h3>
+                <p className="mt-2 text-sm text-slate-500">Subjects and their resources for this semester will be added here.</p>
+              </div>
+            )}
+          </>
         )}
       </section>
     </main>
