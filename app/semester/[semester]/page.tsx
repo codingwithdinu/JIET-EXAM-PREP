@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, GraduationCap } from "lucide-react";
-import ResourceButtons from "@/components/ResourceButtons";
 import { getBranches, getSubjects, semesters } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -82,7 +81,6 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Study resources</p>
                 <h2 className="mt-1 text-xl font-black">What do you want to study?</h2>
               </div>
-              <ResourceButtons semester={number} />
             </div>
 
             <div className="mt-12 flex items-end justify-between">
@@ -110,7 +108,6 @@ export default async function SemesterPage({ params }: { params: Promise<{ semes
                       </div>
                     </Link>
                     <div className="mt-6 border-t border-slate-100 pt-5">
-                      <ResourceButtons semester={number} subject={subject.slug} />
                     </div>
                   </div>
                 ))}
