@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, BookOpen, FlaskConical, GraduationCap, Layers3 } from "lucide-react";
-import ResourceButtons from "@/components/ResourceButtons";
 import { getBranches, getSubjects, semesters } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -43,15 +42,6 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
       </header>
 
       <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Branch resources</p>
-          <h2 className="mt-1 text-xl font-black">Study material</h2>
-          <p className="mt-2 text-sm text-slate-500">These resource categories are available for every branch.</p>
-          <div className="mt-5 max-w-3xl">
-            <ResourceButtons semester={number} branch={branch.slug} />
-          </div>
-        </div>
-
         <div className="mt-12 flex items-end justify-between gap-5">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Subjects</p>
@@ -99,7 +89,6 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
                           </div>
                         </Link>
                         <div className="mt-6 border-t border-slate-100 pt-5">
-                          <ResourceButtons semester={number} branch={branch.slug} subject={subject.slug} />
                         </div>
                       </div>
                     ))}
