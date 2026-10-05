@@ -23,7 +23,7 @@ const resourceMeta = [
 export default async function SubjectPage({ params }: { params: Promise<{ semester: string; subject: string }> }) {
   const { semester: semesterParam, subject: subjectSlug } = await params;
   const semesterNumber = Number(semesterParam);
-  const subject = getSubject(semesterNumber, subjectSlug);
+  const subject = getSubject(semesterNumber, undefined, subjectSlug);
   const semester = semesters.find((item) => item.number === semesterNumber);
 
   if (!subject || !semester) notFound();
