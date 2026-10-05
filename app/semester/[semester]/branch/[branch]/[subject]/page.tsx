@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, FileQuestion, FileText, FlaskConical, GraduationCap, LibraryBig } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, GraduationCap } from "lucide-react";
 import { getBranches, getSubject, getSubjects, semesters } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -64,6 +64,24 @@ export default async function BranchSubjectPage({ params }: { params: Promise<{ 
               </Link>
             );
           })}
+        </div>
+
+        <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          <a
+            href={`https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-4 rounded-2xl bg-slate-950 px-5 py-4 text-white transition hover:bg-slate-800"
+          >
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-white/10">
+              <ExternalLink size={19} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-black">Open {subject.code} in Google Drive</p>
+              <p className="mt-1 truncate text-xs text-slate-400">Search study material for {subject.name}</p>
+            </div>
+            <ArrowRight className="text-slate-400 transition group-hover:translate-x-1" size={18} />
+          </a>
         </div>
 
         <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-7">
