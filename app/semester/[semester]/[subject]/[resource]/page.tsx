@@ -31,7 +31,9 @@ export default async function ResourcePage({
 }) {
   const { semester: semesterParam, subject: subjectSlug, resource } = await params;
   const semesterNumber = Number(semesterParam);
-  const subject = getSubject(semesterNumber, subjectSlug);
+
+  // Legacy non-branch route: branch is intentionally undefined.
+  const subject = getSubject(semesterNumber, undefined, subjectSlug);
   const semester = semesters.find((item) => item.number === semesterNumber);
   const resourceData = resourceMap[resource as ResourceKey];
 
