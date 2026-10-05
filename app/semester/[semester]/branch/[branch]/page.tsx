@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, BookOpen, GraduationCap } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, FlaskConical, GraduationCap, Layers3 } from "lucide-react";
 import ResourceButtons from "@/components/ResourceButtons";
 import { getBranches, getSubjects, semesters } from "@/lib/data";
 
@@ -48,7 +48,7 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
           <h2 className="mt-1 text-xl font-black">Study material</h2>
           <p className="mt-2 text-sm text-slate-500">These resource categories are available for every branch.</p>
           <div className="mt-5 max-w-3xl">
-            <ResourceButtons semester={number} />
+            <ResourceButtons semester={number} branch={branch.slug} />
           </div>
         </div>
 
@@ -61,24 +61,52 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
         </div>
 
         {subjects.length ? (
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {subjects.map((subject) => (
-              <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-                <Link href={`/semester/${number}/${branch.slug}/${subject.slug}`} className="group block">
-                  <div className="flex items-start justify-between gap-5">
+          <div className="mt-8 space-y-10">
+            {(["theory", "lab", "other"] as const).map((kind) => {
+              const grouped = subjects.filter((subject) => subject.kind === kind);
+              if (!grouped.length) return null;
+
+              const meta = kind === "theory"
+                ? { title: "Theory Subjects", subtitle: "Core and elective theory subjects", icon: Layers3 }
+                : kind === "lab"
+                  ? { title: "Practical / Lab Subjects", subtitle: "Laboratory courses and practical work", icon: FlaskConical }
+                  : { title: "Other Academic Courses", subtitle: "MOOC, AEC, SEC, VAC and training components", icon: BookOpen };
+
+              const Icon = meta.icon;
+
+              return (
+                <section key={kind}>
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-11 w-11 place-items-center rounded-2xl bg-slate-950 text-white"><Icon size={19} /></div>
                     <div>
-                      <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
-                      <h3 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h3>
-                      <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
+                      <h3 className="text-xl font-black">{meta.title}</h3>
+                      <p className="text-sm text-slate-500">{meta.subtitle}</p>
                     </div>
-                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white"><ArrowRight size={18} /></div>
+                    <span className="ml-auto rounded-full bg-white px-3 py-1.5 text-xs font-bold text-slate-500 ring-1 ring-slate-200">{grouped.length}</span>
                   </div>
-                </Link>
-                <div className="mt-6 border-t border-slate-100 pt-5">
-                  <ResourceButtons semester={number} subject={subject.slug} />
-                </div>
-              </div>
-            ))}
+
+                  <div className="mt-5 grid gap-5 md:grid-cols-2">
+                    {grouped.map((subject) => (
+                      <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                        <Link href={`/semester/${number}/branch/${branch.slug}/${subject.slug}`} className="group block">
+                          <div className="flex items-start justify-between gap-5">
+                            <div className="min-w-0">
+                              <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
+                              <h4 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h4>
+                              <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
+                            </div>
+                            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white"><ArrowRight size={18} /></div>
+                          </div>
+                        </Link>
+                        <div className="mt-6 border-t border-slate-100 pt-5">
+                          <ResourceButtons semester={number} branch={branch.slug} subject={subject.slug} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         ) : (
           <div className="mt-8 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
