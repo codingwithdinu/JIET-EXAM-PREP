@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
@@ -201,8 +202,9 @@ export default function Home() {
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
           {semesters.map((sem) => (
-            <button
+            <Link
               key={sem.number}
+              href={`/semester/${sem.number}`}
               className="group rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
             >
               <span className="text-xs font-black text-slate-400">0{sem.number}</span>
@@ -210,7 +212,7 @@ export default function Home() {
                 <span className="text-sm font-extrabold">{sem.label}</span>
                 <ArrowRight size={16} className="translate-x-0 text-slate-400 transition group-hover:translate-x-1 group-hover:text-slate-950" />
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       </section>
@@ -254,7 +256,7 @@ export default function Home() {
 
         <div className="mt-8 grid gap-4 md:grid-cols-2">
           {filtered.length ? filtered.map((subject) => (
-            <article key={subject.code} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <Link href={`/semester/5/${subject.code === "DAA" ? "design-analysis-algorithms" : subject.code === "DIP" ? "digital-image-processing" : subject.code === "AML" ? "applied-machine-learning" : "compiler-design"}`} key={subject.code} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
@@ -265,7 +267,7 @@ export default function Home() {
                   <ChevronRight size={19} />
                 </div>
               </div>
-            </article>
+            </Link>
           )) : (
             <div className="md:col-span-2 rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center">
               <p className="font-bold">No matching subjects found.</p>
