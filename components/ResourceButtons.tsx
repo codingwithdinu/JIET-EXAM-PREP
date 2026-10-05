@@ -24,7 +24,7 @@ export default function ResourceButtons({
       {resources.map((item) => {
         const Icon = item.icon;
         const base = branch
-          ? `/semester/${semester}/${branch}`
+          ? `/semester/${semester}/branch/${branch}`
           : `/semester/${semester}`;
         const href = subject
           ? branch
