@@ -144,55 +144,58 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="library-preview">
-            <div className="preview-top">
+          <div className="student-preview">
+            <div className="student-preview-head">
               <div>
-                <span className="preview-kicker">LIBRARY PREVIEW</span>
-                <h2>Find it in three steps.</h2>
+                <span className="preview-kicker">JIET STUDY COMMUNITY</span>
+                <h2>Study together. Grow together.</h2>
               </div>
-              <div className="preview-badge">LIVE INDEX</div>
+              <span className="preview-badge">STUDENT LIFE</span>
             </div>
 
-            <div className="preview-path">
-              <span className="path-number">01</span>
-              <div>
-                <small>SEMESTER</small>
-                <strong>Semester 5</strong>
-              </div>
-              <ChevronRight size={17} />
-              <span className="path-number">02</span>
-              <div>
-                <small>BRANCH</small>
-                <strong>CSE · CS</strong>
-              </div>
-            </div>
-
-            <div className="preview-subject">
-              <div className="subject-symbol"><BookOpen size={18} /></div>
-              <div className="subject-copy">
-                <small>SUBJECT</small>
-                <strong>Data Structures & Algorithms</strong>
-                <span>Course resources</span>
-              </div>
-              <ArrowUpRight size={18} />
-            </div>
-
-            <div className="preview-resources">
-              {["Notes", "Important Questions", "PYQs"].map((item, index) => (
-                <div key={item} className="resource-mini">
-                  <span>0{index + 1}</span>
-                  <strong>{item}</strong>
-                  <FolderOpen size={15} />
+            <div className="student-photo-grid">
+              <div className="student-photo student-photo-large">
+                <img
+                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=85"
+                  alt="Students studying together"
+                />
+                <div className="student-photo-overlay">
+                  <span>01</span>
+                  <strong>Collaborative learning</strong>
                 </div>
-              ))}
+              </div>
+
+              <div className="student-photo">
+                <img
+                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=85"
+                  alt="College students studying"
+                />
+                <div className="student-photo-overlay compact">
+                  <span>02</span>
+                  <strong>Campus study</strong>
+                </div>
+              </div>
+
+              <div className="student-photo">
+                <img
+                  src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=85"
+                  alt="Student working on a laptop"
+                />
+                <div className="student-photo-overlay compact">
+                  <span>03</span>
+                  <strong>Focused preparation</strong>
+                </div>
+              </div>
             </div>
 
-            <div className="preview-footer">
-              <span>Semester → Branch → Subject</span>
-              <span className="preview-arrow"><ArrowUpRight size={15} /></span>
+            <div className="student-preview-footer">
+              <div>
+                <span className="student-status-dot" />
+                <strong>Made for everyday study</strong>
+              </div>
+              <span>Semester · Branch · Subject</span>
             </div>
           </div>
-        </div>
       </div>
 
       <section className="section-block section-tight">
