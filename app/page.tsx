@@ -262,7 +262,12 @@ export default function Home() {
 
         <div className="branch-grid">
           {getBranches().map((branch, index) => (
-            <div key={branch.slug} className="branch-card">
+            <Link
+              key={branch.slug}
+              href={`/branch/${branch.slug}`}
+              className="branch-card"
+              aria-label={`Open all ${branch.name} subjects`}
+            >
               <div className="branch-index">0{index + 1}</div>
               <div className="branch-monogram">{branch.code.split("-")[0]}</div>
               <div className="branch-copy">
@@ -270,7 +275,7 @@ export default function Home() {
                 <h3>{branch.name}</h3>
               </div>
               <Layers3 size={17} className="branch-icon" />
-            </div>
+            </Link>
           ))}
         </div>
       </section>
