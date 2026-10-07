@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, BookOpen, FlaskConical, GraduationCap, Layers3 } from "lucide-react";
 import { getBranches, getSubjects, semesters } from "@/lib/data";
+import { getDriveUrl } from "@/lib/drive";
 
 export function generateStaticParams() {
   return semesters.flatMap((semester) =>
@@ -18,6 +19,8 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
   const branch = getBranches().find((item) => item.slug === branchSlug);
 
   if (!semester || !branch || number < 3) notFound();
+
+  const subjectsWithDrive = await Promise.all(subjects.map(async (subject) => ({ subject, driveUrl: await getDriveUrl(number, branch.slug, subject.slug, subject.driveUrl) })));
 
   const subjects = getSubjects(number, branch.slug);
 
@@ -76,7 +79,7 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
                   </div>
 
                   <div className="mt-5 grid gap-5 md:grid-cols-2">
-                    {grouped.map((subject) => (
+                    {grouped.map(({ subject, driveUrl }) => (
                       <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
                         <div className="flex items-start justify-between gap-5">
                           <Link href={`/semester/${number}/branch/${branch.slug}/${subject.slug}`} className="group min-w-0 flex-1">
@@ -86,7 +89,7 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
                             <p className="mt-4 text-xs font-bold text-slate-400">Notes · Important Questions · PYQs</p>
                           </Link>
                           <a
-                            href={subject.driveUrl ?? `https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
+                            href={driveUrl ?? `https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={`Open ${subject.name} in Google Drive`}
