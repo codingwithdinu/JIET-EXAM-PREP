@@ -10,9 +10,13 @@ export default function Home() {
   const [query, setQuery] = useState("");
 
   const allSubjects = useMemo(() => {
-    const common = [1,2].flatMap((n) => getSubjects(n));
+    const common = [1,2].flatMap((n) => getSubjects(n).map(subject => ({
+      subject, href: `/semester/${n}/${subject.slug}`, meta: `Semester ${n}`
+    })));
     const branchSubjects = semesters.slice(2).flatMap((s) =>
-      getBranches().flatMap((b) => getSubjects(s.number, b.slug))
+      getBranches().flatMap((b) => getSubjects(s.number, b.slug).map(subject => ({
+        subject, href: `/semester/${s.number}/branch/${b.slug}/${subject.slug}`, meta: `${s.title} · ${b.code}`
+      })))
     );
     return [...common, ...branchSubjects];
   }, []);
@@ -20,7 +24,7 @@ export default function Home() {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
-    return allSubjects.filter((s) => [s.name, s.code, s.shortName].some(v => v.toLowerCase().includes(q))).slice(0, 8);
+    return allSubjects.filter(({subject:s}) => [s.name, s.code, s.shortName].some(v => v.toLowerCase().includes(q))).slice(0, 8);
   }, [query, allSubjects]);
 
   const populatedSubjects = allSubjects.length;
@@ -55,10 +59,10 @@ export default function Home() {
               </div>
               {query.trim() && (
                 <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-20 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
-                  {results.length ? results.map((s) => (
-                    <Link key={s.slug+s.code} href="#" onClick={() => setQuery("")}
+                  {results.length ? results.map(({subject:s, href, meta}) => (
+                    <Link key={href} href={href} onClick={() => setQuery("")}
                       className="flex items-center justify-between border-b border-slate-100 px-4 py-3.5 last:border-0 hover:bg-slate-50">
-                      <div><p className="text-sm font-extrabold">{s.name}</p><p className="mt-1 text-[11px] font-bold text-slate-400">{s.code}</p></div>
+                      <div><p className="text-sm font-extrabold">{s.name}</p><p className="mt-1 text-[11px] font-bold text-slate-400">{s.code} · {meta}</p></div>
                       <ChevronRight size={17} className="text-slate-300" />
                     </Link>
                   )) : <p className="px-4 py-4 text-sm font-semibold text-slate-500">No subject found.</p>}
