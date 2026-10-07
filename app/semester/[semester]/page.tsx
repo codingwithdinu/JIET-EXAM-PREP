@@ -200,7 +200,8 @@ export default async function SemesterPage({
             <ArrowLeft size={14} /> Home
           </Link>
 
-          <div className="mt-8 max-w-3xl">
+          <div className="mt-8 flex max-w-5xl flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div>
             <p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-600">
               Semester portal
             </p>
@@ -211,6 +212,20 @@ export default async function SemesterPage({
               {semester.description}
             </p>
           </div>
+
+          {common && (
+            <a
+              href="https://drive.google.com/file/d/1IS4lMPler_dUiZ1oCJaXtPszjiH3uixo/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Open Semester Syllabus in Google Drive"
+              className="inline-flex shrink-0 items-center justify-center gap-3 rounded-2xl bg-slate-950 px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-indigo-600 hover:shadow-xl"
+            >
+              <span>Sem Syllabus</span>
+              <ArrowRight size={16} />
+            </a>
+          )}
+        </div>
         </div>
       </section>
 
