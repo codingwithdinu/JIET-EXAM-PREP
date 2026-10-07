@@ -121,45 +121,57 @@ export default function Home() {
           </div>
 
           <div className="relative">
-            <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-2xl shadow-slate-950/10">
-              <div className="rounded-3xl bg-slate-950 p-6 text-white">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-semibold text-slate-400">CURRENT FOCUS</p>
-                    <h2 className="mt-1 text-2xl font-black tracking-tight">Semester 5</h2>
+            <div className="overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-2xl shadow-slate-950/10">
+              <div className="relative h-52 overflow-hidden bg-slate-950">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.5),transparent_35%),radial-gradient(circle_at_80%_75%,rgba(139,92,246,0.45),transparent_35%)]" />
+                <div className="absolute -right-10 -top-16 h-48 w-48 rounded-full border border-white/10" />
+                <div className="absolute -bottom-20 -left-12 h-56 w-56 rounded-full border border-white/10" />
+                <div className="relative flex h-full flex-col justify-between p-6 text-white">
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] ring-1 ring-white/10">AI Study Hub</span>
+                    <BrainCircuit size={25} className="text-indigo-200" />
                   </div>
-                  <BrainCircuit size={28} className="text-slate-300" />
+                  <div>
+                    <p className="text-xs font-semibold text-slate-300">CURRENT FOCUS</p>
+                    <h2 className="mt-1 text-3xl font-black tracking-tight">Semester 5</h2>
+                    <p className="mt-1 text-xs text-slate-400">Your subjects, one focused workspace.</p>
+                  </div>
                 </div>
-                <div className="mt-6 grid gap-3">
+              </div>
+
+              <div className="p-4">
+                <div className="grid gap-2.5">
                   {[
-                    ["DAA", "12 important topics"],
-                    ["DIP", "8 unit-wise notes"],
-                    ["AML", "6 exam sets"],
-                  ].map(([code, meta]) => (
-                    <div key={code} className="flex items-center justify-between rounded-2xl bg-white/8 px-4 py-3 ring-1 ring-white/8">
-                      <div>
-                        <p className="font-extrabold">{code}</p>
-                        <p className="text-xs text-slate-400">{meta}</p>
+                    ["DAA", "Design & Analysis of Algorithms", "12 topics"],
+                    ["DIP", "Digital Image Processing", "8 notes"],
+                    ["AML", "Applied Machine Learning", "6 sets"],
+                  ].map(([code, name, meta]) => (
+                    <div key={code} className="group flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-3.5 transition hover:border-indigo-200 hover:bg-white hover:shadow-md">
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-xs font-black text-slate-950 ring-1 ring-slate-200">{code}</div>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-black">{name}</p>
+                        <p className="mt-0.5 text-[11px] font-semibold text-slate-400">{meta} · Semester 5</p>
                       </div>
-                      <ChevronRight size={17} className="text-slate-500" />
+                      <ChevronRight size={17} className="text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-950" />
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {[
+                    ["08", "Semesters"],
+                    ["∞", "Resources"],
+                    ["01", "Study hub"],
+                  ].map(([n, label]) => (
+                    <div key={label} className="rounded-2xl bg-slate-50 px-2 py-3 text-center ring-1 ring-slate-100">
+                      <p className="text-base font-black">{n}</p>
+                      <p className="mt-0.5 text-[10px] font-bold text-slate-400">{label}</p>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="mt-4 grid grid-cols-3 gap-3">
-                {[
-                  ["8", "Semesters"],
-                  ["∞", "Resources"],
-                  ["1", "Study hub"],
-                ].map(([n, label]) => (
-                  <div key={label} className="rounded-2xl bg-slate-50 px-3 py-4 text-center">
-                    <p className="text-lg font-black">{n}</p>
-                    <p className="mt-1 text-[11px] font-semibold text-slate-500">{label}</p>
-                  </div>
-                ))}
-              </div>
             </div>
-          </div>
+          </div>          </div>
         </div>
       </section>
 
