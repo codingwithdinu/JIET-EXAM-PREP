@@ -41,6 +41,70 @@ export default async function SemesterPage({
     ? [...getSubjects(1), ...getSubjects(2)]
     : getSubjects(number);
 
+  const foundationSubjects = common
+    ? subjects.filter((subject) => subject.kind !== "lab")
+    : subjects;
+
+  const labSubjects = common
+    ? Array.from(
+        new Map(
+          subjects
+            .filter((subject) => subject.kind === "lab")
+            .map((subject) => [subject.slug, subject])
+        ).values()
+      )
+    : [];
+
+  const renderSubjectCards = (items: typeof subjects) => (
+    <div className="mt-7 grid gap-4 md:grid-cols-2">
+      {items.map((s) => (
+        <article
+          key={s.slug}
+          className="group relative rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
+        >
+          <Link
+            href={`/semester/${number}/${s.slug}`}
+            className="block pr-14"
+          >
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black text-slate-600">
+              {s.code}
+            </span>
+            <h3 className="mt-4 text-lg font-black tracking-tight">
+              {s.name}
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              {s.description}
+            </p>
+          </Link>
+
+          <a
+            href={
+              s.driveUrl ||
+              `https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(s.name)}`
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open ${s.name} in Google Drive`}
+            title="Open in Google Drive"
+            className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-xl bg-slate-950 text-white transition hover:scale-105 hover:bg-indigo-600"
+          >
+            <ArrowRight size={16} />
+          </a>
+        </article>
+      ))}
+    </div>
+  );
+
+  const renderEmpty = () => (
+    <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
+      <BookOpen className="mx-auto text-slate-300" />
+      <h3 className="mt-4 font-black">Subjects coming soon</h3>
+      <p className="mt-2 text-sm text-slate-500">
+        This semester structure is ready for academic content.
+      </p>
+    </div>
+  );
+
   const branchSection =
     !common && number >= 3 ? (
       <>
@@ -86,7 +150,7 @@ export default async function SemesterPage({
       </>
     ) : (
       <>
-        <div className="flex items-end justify-between">
+        <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-600">
               Subjects
@@ -94,55 +158,30 @@ export default async function SemesterPage({
             <h2 className="mt-2 text-2xl font-black">Foundation subjects</h2>
           </div>
           <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold text-slate-400 ring-1 ring-slate-200">
-            {subjects.length} subjects
+            {foundationSubjects.length} subjects
           </span>
         </div>
 
-        {subjects.length > 0 ? (
-          <div className="mt-7 grid gap-4 md:grid-cols-2">
-            {subjects.map((s) => (
-              <article
-                key={s.slug}
-                className="group relative rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
-              >
-                <Link
-                  href={`/semester/${number}/${s.slug}`}
-                  className="block pr-14"
-                >
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black text-slate-600">
-                    {s.code}
-                  </span>
-                  <h3 className="mt-4 text-lg font-black tracking-tight">
-                    {s.name}
-                  </h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500">
-                    {s.description}
-                  </p>
-                </Link>
+        {foundationSubjects.length > 0 ? renderSubjectCards(foundationSubjects) : renderEmpty()}
 
-                <a
-                  href={
-                    s.driveUrl ||
-                    `https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(s.name)}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Open ${s.name} in Google Drive`}
-                  title="Open in Google Drive"
-                  className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-xl bg-slate-950 text-white transition hover:scale-105 hover:bg-indigo-600"
-                >
-                  <ArrowRight size={16} />
-                </a>
-              </article>
-            ))}
-          </div>
-        ) : (
-          <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
-            <BookOpen className="mx-auto text-slate-300" />
-            <h3 className="mt-4 font-black">Subjects coming soon</h3>
-            <p className="mt-2 text-sm text-slate-500">
-              This semester structure is ready for academic content.
-            </p>
+        {common && (
+          <div className="mt-14">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-600">
+                  Practical courses
+                </p>
+                <h2 className="mt-2 text-2xl font-black">Laboratory & Practical Courses</h2>
+                <p className="mt-2 text-sm text-slate-500">
+                  All first-year lab and practical subjects are grouped here.
+                </p>
+              </div>
+              <span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold text-slate-400 ring-1 ring-slate-200">
+                {labSubjects.length} labs
+              </span>
+            </div>
+
+            {labSubjects.length > 0 ? renderSubjectCards(labSubjects) : renderEmpty()}
           </div>
         )}
       </>
