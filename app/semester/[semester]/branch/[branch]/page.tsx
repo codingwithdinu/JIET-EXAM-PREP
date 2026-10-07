@@ -20,9 +20,8 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
 
   if (!semester || !branch || number < 3) notFound();
 
-  const subjectsWithDrive = await Promise.all(subjects.map(async (subject) => ({ subject, driveUrl: await getDriveUrl(number, branch.slug, subject.slug, subject.driveUrl) })));
-
   const subjects = getSubjects(number, branch.slug);
+  const subjectsWithDrive = await Promise.all(subjects.map(async (subject) => ({ subject, driveUrl: await getDriveUrl(number, branch.slug, subject.slug, subject.driveUrl) })));
 
   return (
     <main className="min-h-screen bg-[#f7f8fc] text-slate-950">
@@ -56,7 +55,7 @@ export default async function BranchPage({ params }: { params: Promise<{ semeste
         {subjects.length ? (
           <div className="mt-8 space-y-10">
             {(["theory", "lab", "other"] as const).map((kind) => {
-              const grouped = subjects.filter((subject) => subject.kind === kind);
+              const grouped = subjectsWithDrive.filter(({ subject }) => subject.kind === kind);
               if (!grouped.length) return null;
 
               const meta = kind === "theory"
