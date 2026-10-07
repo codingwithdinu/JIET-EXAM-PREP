@@ -130,9 +130,42 @@ const cseSemesters: Record<number, Subject[]> = {
   7: [], 8: [],
 };
 
+const driveSearch = (name: string) =>
+  `https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(name)}`;
+
 const commonSubjects: Record<number, Subject[]> = {
-  1: [],
-  2: [],
+  1: [
+    makeSubject("1FY2-01", "Calculus & Vector Analysis", "theory", "Engineering mathematics foundation.", driveSearch("Calculus & Vector Analysis")),
+    makeSubject("1FY2-02", "Engineering Physics", "theory", "Core first-year engineering physics.", driveSearch("Engineering Physics")),
+    makeSubject("1FY2-03", "Engineering Chemistry", "theory", "Core first-year engineering chemistry.", driveSearch("Engineering Chemistry")),
+    makeSubject("1FY3-04", "Programming for Problem Solving", "theory", "Programming fundamentals and problem solving.", driveSearch("Programming for Problem Solving")),
+    makeSubject("1FY3-05/06", "Civil Engineering / Electrical & Electronics Engineering", "theory", "Branch-linked first-year engineering foundation course.", driveSearch("Civil Engineering Electrical Electronics Engineering JIET")),
+    makeSubject("1FY3-07", "Mechanical Engineering", "theory", "Engineering foundation course.", driveSearch("Mechanical Engineering JIET")),
+    makeSubject("1FY1-08", "Human Values and Ethics in Engineering", "other", "Professional values and engineering ethics.", driveSearch("Human Values and Ethics in Engineering")),
+    makeSubject("1FY2-21", "Engineering Physics Lab", "lab", "Practical engineering physics work.", driveSearch("Engineering Physics Lab JIET")),
+    makeSubject("1FY2-22", "Engineering Chemistry Lab", "lab", "Practical engineering chemistry work.", driveSearch("Engineering Chemistry Lab JIET")),
+    makeSubject("1FY3-23", "Computer Programming Lab", "lab", "Hands-on programming practice.", driveSearch("Computer Programming Lab JIET")),
+    makeSubject("1FY3-24/25", "Civil Engineering Lab / Electrical & Electronics Engineering Lab", "lab", "Branch-linked engineering laboratory work.", driveSearch("Civil Engineering Lab Electrical Electronics Engineering Lab JIET")),
+    makeSubject("1FY3-26", "Engineering Graphics and Machine Drawing", "theory", "Engineering graphics and technical drawing.", driveSearch("Engineering Graphics and Machine Drawing JIET")),
+    makeSubject("1FY3-27", "Workshop – Manufacturing Practices", "lab", "Hands-on workshop and manufacturing practices.", driveSearch("Workshop Manufacturing Practices JIET")),
+    makeSubject("1FY1-28", "Language Lab", "lab", "Communication and language practice.", driveSearch("Language Lab JIET")),
+    makeSubject("1FY8-00", "SODECA", "other", "Social outreach, discipline and extracurricular activities.", driveSearch("SODECA JIET")),
+  ],
+  2: [
+    makeSubject("2FY2-01", "Linear Algebra & Differential Equations", "theory", "Engineering mathematics foundation.", driveSearch("Linear Algebra Differential Equations JIET")),
+    makeSubject("2FY2-02", "Engineering Physics", "theory", "Core first-year engineering physics.", driveSearch("Engineering Physics JIET")),
+    makeSubject("2FY2-03", "Engineering Chemistry", "theory", "Core first-year engineering chemistry.", driveSearch("Engineering Chemistry JIET")),
+    makeSubject("2FY3-04", "Python Programming", "theory", "Python programming and problem solving.", driveSearch("Python Programming JIET")),
+    makeSubject("2FY3-05", "Civil Engineering", "theory", "Engineering foundation course.", driveSearch("Civil Engineering JIET")),
+    makeSubject("2FY3-06", "Electrical & Electronics Engineering", "theory", "Electrical and electronics foundation.", driveSearch("Electrical Electronics Engineering JIET")),
+    makeSubject("2FY3-07", "Mechanical Engineering", "theory", "Engineering foundation course.", driveSearch("Mechanical Engineering JIET")),
+    makeSubject("2FY2-21", "Engineering Physics Lab", "lab", "Practical engineering physics work.", driveSearch("Engineering Physics Lab JIET")),
+    makeSubject("2FY2-22", "Engineering Chemistry Lab", "lab", "Practical engineering chemistry work.", driveSearch("Engineering Chemistry Lab JIET")),
+    makeSubject("2FY3-23", "Python Programming Lab", "lab", "Hands-on Python programming practice.", driveSearch("Python Programming Lab JIET")),
+    makeSubject("2FY3-26", "Engineering Graphics and Machine Drawing", "theory", "Engineering graphics and technical drawing.", driveSearch("Engineering Graphics and Machine Drawing JIET")),
+    makeSubject("2FY1-28", "Language Lab", "lab", "Communication and language practice.", driveSearch("Language Lab JIET")),
+    makeSubject("2FY8-00", "SODECA", "other", "Social outreach, discipline and extracurricular activities.", driveSearch("SODECA JIET")),
+  ],
 };
 
 const branchSubjects: Record<string, Record<number, Subject[]>> = {};
