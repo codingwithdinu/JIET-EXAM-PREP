@@ -15,7 +15,8 @@ import {
   Target,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { getSubjects } from "@/lib/data";
 
 const semesters = Array.from({ length: 8 }, (_, i) => ({
   number: i + 1,
@@ -29,6 +30,12 @@ const semesters = Array.from({ length: 8 }, (_, i) => ({
 export default function Home() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [query, setQuery] = useState("");
+  const searchResults = useMemo(() => {
+    const all = getSubjects(5, "cse-cs");
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return all.filter((subject) => [subject.name, subject.code, subject.shortName].some((value) => value.toLowerCase().includes(q))).slice(0, 6);
+  }, [query]);
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#f7f8fc] text-slate-950">
@@ -106,11 +113,24 @@ export default function Home() {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search a subject, topic or resource..."
+                placeholder="Search a subject or subject code..."
                 className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm outline-none placeholder:text-slate-400"
               />
               <button className="rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white">Search</button>
             </div>
+            {query.trim() && (
+              <div className="mt-3 max-w-2xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+                {searchResults.length ? searchResults.map((subject) => (
+                  <Link key={subject.slug} href={"/semester/5/branch/cse-cs/" + subject.slug} onClick={() => setQuery("")} className="flex items-center justify-between border-b border-slate-100 px-4 py-3 last:border-0 hover:bg-slate-50">
+                    <div>
+                      <p className="text-sm font-black">{subject.name}</p>
+                      <p className="mt-0.5 text-[11px] font-bold text-slate-400">{subject.code} · Semester 5 · CSE-CS</p>
+                    </div>
+                    <ArrowRight size={16} className="text-slate-400" />
+                  </Link>
+                )) : <p className="px-4 py-4 text-sm font-semibold text-slate-500">No matching subject found.</p>}
+              </div>
+            )}
 
             <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
               <span className="rounded-full bg-white px-3 py-2 ring-1 ring-slate-200">DAA</span>
