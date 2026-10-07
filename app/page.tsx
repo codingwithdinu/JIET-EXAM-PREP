@@ -1,244 +1,157 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ArrowRight,
-  BookOpen,
-  BrainCircuit,
-  ChevronRight,
-  FileText,
-  GraduationCap,
-  LibraryBig,
-  Menu,
-  Search,
-  Sparkles,
-  Target,
-  X,
-} from "lucide-react";
 import { useMemo, useState } from "react";
-import { getSubjects } from "@/lib/data";
-
-const semesters = Array.from({ length: 8 }, (_, i) => ({
-  number: i + 1,
-  label: `Semester ${i + 1}`,
-}));
-
-
-
-
+import { ArrowRight, BookOpen, CheckCircle2, ChevronRight, FileQuestion, Search, Sparkles, Layers3, GraduationCap } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
+import { getBranches, getSubjects, semesters } from "@/lib/data";
 
 export default function Home() {
-  const [mobileMenu, setMobileMenu] = useState(false);
   const [query, setQuery] = useState("");
-  const searchResults = useMemo(() => {
-    const all = getSubjects(5, "cse-cs");
+
+  const allSubjects = useMemo(() => {
+    const common = [1,2].flatMap((n) => getSubjects(n));
+    const branchSubjects = semesters.slice(2).flatMap((s) =>
+      getBranches().flatMap((b) => getSubjects(s.number, b.slug))
+    );
+    return [...common, ...branchSubjects];
+  }, []);
+
+  const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
-    return all.filter((subject) => [subject.name, subject.code, subject.shortName].some((value) => value.toLowerCase().includes(q))).slice(0, 6);
-  }, [query]);
+    return allSubjects.filter((s) => [s.name, s.code, s.shortName].some(v => v.toLowerCase().includes(q))).slice(0, 8);
+  }, [query, allSubjects]);
+
+  const populatedSubjects = allSubjects.length;
+  const branchCount = getBranches().length;
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#f7f8fc] text-slate-950">
-      <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-2xl">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-          <a href="#" className="group flex items-center gap-3">
-            <div className="relative grid h-11 w-11 place-items-center overflow-hidden rounded-[15px] bg-slate-950 text-white shadow-lg shadow-slate-950/15 transition duration-300 group-hover:-rotate-2 group-hover:scale-105">
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-transparent to-violet-500/30" />
-              <GraduationCap size={22} className="relative" strokeWidth={2.4} />
-            </div>
-            <div className="leading-none">
-              <p className="text-[15px] font-black tracking-[-0.02em] text-slate-950">JIET Exam Prep</p>
-              <div className="mt-1.5 flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <p className="text-[10px] font-bold uppercase tracking-[0.13em] text-slate-400">Student Study Hub</p>
-              </div>
-            </div>
-          </a>
+    <main className="min-h-screen bg-[#f6f7fb] text-[#101828]">
+      <SiteHeader />
 
-          <div className="hidden items-center rounded-2xl border border-slate-200/80 bg-slate-50/80 p-1 md:flex">
-            <a href="#semesters" className="rounded-xl bg-white px-4 py-2.5 text-[13px] font-extrabold text-slate-950 shadow-sm ring-1 ring-slate-200/70 transition hover:-translate-y-px">Semesters</a>
-          </div>
-
-          <div className="hidden items-center gap-2.5 md:flex">
-            <button className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-[13px] font-extrabold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
-              Admin
-            </button>
-            <a href="#semesters" className="group inline-flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-[13px] font-extrabold text-white shadow-lg shadow-slate-950/15 transition hover:-translate-y-0.5 hover:bg-slate-800">
-              Start studying
-              <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-            </a>
-          </div>
-
-          <button
-            onClick={() => setMobileMenu((v) => !v)}
-            className="grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white text-slate-800 shadow-sm transition hover:bg-slate-50 md:hidden"
-            aria-label="Toggle menu"
-          >
-            {mobileMenu ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-        {mobileMenu && (
-          <div className="border-t border-slate-200/80 bg-white px-5 py-4 shadow-xl shadow-slate-950/5 md:hidden">
-            <div className="grid gap-1.5">
-              <a onClick={() => setMobileMenu(false)} href="#semesters" className="rounded-xl px-4 py-3 text-sm font-extrabold text-slate-800 transition hover:bg-slate-50">Semesters</a>
-                            <div className="mt-2 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-                <button className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-extrabold text-slate-700">Admin</button>
-                <a onClick={() => setMobileMenu(false)} href="#semesters" className="rounded-xl bg-slate-950 px-4 py-3 text-center text-sm font-extrabold text-white">Start studying</a>
-              </div>
+      <section className="portal-grid relative overflow-hidden border-b border-slate-200/80">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(99,102,241,.13),transparent_28%),radial-gradient(circle_at_90%_10%,rgba(14,165,233,.10),transparent_24%)]" />
+        <div className="relative mx-auto max-w-[1240px] px-5 pb-20 pt-16 lg:px-8 lg:pb-24 lg:pt-24">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-white/90 px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[.13em] text-indigo-700 shadow-sm">
+              <Sparkles size={13} /> Built for JIET students
             </div>
-          </div>
-        )}
-      </nav>
-
-      <section className="relative">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_5%,rgba(59,130,246,0.13),transparent_28%),radial-gradient(circle_at_85%_18%,rgba(124,58,237,0.10),transparent_26%)]" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pb-18 pt-16 lg:grid-cols-[1.2fr_0.8fr] lg:px-8 lg:pb-24 lg:pt-24">
-          <div>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm">
-              <Sparkles size={14} />
-              Built for JIET students
-            </div>
-            <h1 className="max-w-3xl text-5xl font-black leading-[0.98] tracking-[-0.04em] sm:text-6xl lg:text-7xl">
-              Everything you need to{" "}
-              <span className="bg-gradient-to-r from-slate-950 via-indigo-700 to-violet-600 bg-clip-text text-transparent">
-                prepare better.
-              </span>
+            <h1 className="mt-6 text-5xl font-black leading-[.98] tracking-[-.055em] sm:text-6xl lg:text-[76px]">
+              Your JIET syllabus.<br />
+              <span className="text-indigo-600">Organized to study.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-              Semester-wise syllabus, unit-wise notes, important questions and previous papers — organized in one clean place for faster exam preparation.
+              A clean academic portal for semester-wise subjects, notes, important questions and previous-year papers — without the clutter.
             </p>
 
-            <div className="mt-8 flex max-w-2xl items-center rounded-2xl border border-slate-200 bg-white p-2 shadow-xl shadow-slate-950/5">
-              <Search className="ml-3 text-slate-400" size={20} />
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search a subject or subject code..."
-                className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm outline-none placeholder:text-slate-400"
-              />
-              <button className="rounded-xl bg-slate-950 px-4 py-3 text-sm font-bold text-white">Search</button>
-            </div>
-            {query.trim() && (
-              <div className="mt-3 max-w-2xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
-                {searchResults.length ? searchResults.map((subject) => (
-                  <Link key={subject.slug} href={"/semester/5/branch/cse-cs/" + subject.slug} onClick={() => setQuery("")} className="flex items-center justify-between border-b border-slate-100 px-4 py-3 last:border-0 hover:bg-slate-50">
-                    <div>
-                      <p className="text-sm font-black">{subject.name}</p>
-                      <p className="mt-0.5 text-[11px] font-bold text-slate-400">{subject.code} · Semester 5 · CSE-CS</p>
-                    </div>
-                    <ArrowRight size={16} className="text-slate-400" />
-                  </Link>
-                )) : <p className="px-4 py-4 text-sm font-semibold text-slate-500">No matching subject found.</p>}
+            <div className="relative mt-8 max-w-2xl">
+              <div className="flex items-center rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_18px_50px_rgba(16,24,40,.08)]">
+                <Search className="ml-3 shrink-0 text-slate-400" size={19} />
+                <input value={query} onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search subject name or code..."
+                  className="min-w-0 flex-1 bg-transparent px-3 py-3 text-sm font-medium outline-none placeholder:text-slate-400" />
+                <span className="hidden rounded-xl bg-slate-100 px-3 py-2 text-[10px] font-black text-slate-400 sm:block">SEARCH</span>
               </div>
-            )}
-
-            <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-slate-500">
-              <span className="rounded-full bg-white px-3 py-2 ring-1 ring-slate-200">DAA</span>
-              <span className="rounded-full bg-white px-3 py-2 ring-1 ring-slate-200">DIP</span>
-              <span className="rounded-full bg-white px-3 py-2 ring-1 ring-slate-200">Compiler Design</span>
-              <span className="rounded-full bg-white px-3 py-2 ring-1 ring-slate-200">OS</span>
+              {query.trim() && (
+                <div className="absolute left-0 right-0 top-[calc(100%+8px)] z-20 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+                  {results.length ? results.map((s) => (
+                    <Link key={s.slug+s.code} href="#" onClick={() => setQuery("")}
+                      className="flex items-center justify-between border-b border-slate-100 px-4 py-3.5 last:border-0 hover:bg-slate-50">
+                      <div><p className="text-sm font-extrabold">{s.name}</p><p className="mt-1 text-[11px] font-bold text-slate-400">{s.code}</p></div>
+                      <ChevronRight size={17} className="text-slate-300" />
+                    </Link>
+                  )) : <p className="px-4 py-4 text-sm font-semibold text-slate-500">No subject found.</p>}
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="relative">
-            <div className="overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-2xl shadow-slate-950/10">
-              <div className="relative h-52 overflow-hidden bg-slate-950">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.5),transparent_35%),radial-gradient(circle_at_80%_75%,rgba(139,92,246,0.45),transparent_35%)]" />
-                <div className="absolute -right-10 -top-16 h-48 w-48 rounded-full border border-white/10" />
-                <div className="absolute -bottom-20 -left-12 h-56 w-56 rounded-full border border-white/10" />
-                <div className="relative flex h-full flex-col justify-between p-6 text-white">
-                  <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] ring-1 ring-white/10">AI Study Hub</span>
-                    <BrainCircuit size={25} className="text-indigo-200" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-slate-300">CURRENT FOCUS</p>
-                    <h2 className="mt-1 text-3xl font-black tracking-tight">Semester 5</h2>
-                    <p className="mt-1 text-xs text-slate-400">Your subjects, one focused workspace.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-4">
-                <div className="grid gap-2.5">
-                  {[
-                    ["DAA", "Design & Analysis of Algorithms", "12 topics"],
-                    ["DIP", "Digital Image Processing", "8 notes"],
-                    ["AML", "Applied Machine Learning", "6 sets"],
-                  ].map(([code, name, meta]) => (
-                    <div key={code} className="group flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50/70 p-3.5 transition hover:border-indigo-200 hover:bg-white hover:shadow-md">
-                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-xs font-black text-slate-950 ring-1 ring-slate-200">{code}</div>
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-black">{name}</p>
-                        <p className="mt-0.5 text-[11px] font-semibold text-slate-400">{meta} · Semester 5</p>
-                      </div>
-                      <ChevronRight size={17} className="text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-slate-950" />
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-3 grid grid-cols-3 gap-2">
-                  {[
-                    ["08", "Semesters"],
-                    ["∞", "Resources"],
-                    ["01", "Study hub"],
-                  ].map(([n, label]) => (
-                    <div key={label} className="rounded-2xl bg-slate-50 px-2 py-3 text-center ring-1 ring-slate-100">
-                      <p className="text-base font-black">{n}</p>
-                      <p className="mt-0.5 text-[10px] font-bold text-slate-400">{label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <div className="mt-12 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-4">
+            {[
+              [String(semesters.length).padStart(2,"0"), "Semesters", GraduationCap],
+              [String(branchCount).padStart(2,"0"), "Branches", Layers3],
+              [String(populatedSubjects).padStart(2,"0"), "Subjects", BookOpen],
+              ["04", "Core resources", FileQuestion],
+            ].map(([value,label,Icon]) => {
+              const I = Icon as typeof BookOpen;
+              return <div key={String(label)} className="rounded-2xl border border-white/80 bg-white/80 p-4 shadow-sm backdrop-blur">
+                <I size={17} className="text-indigo-600" />
+                <p className="mt-3 text-2xl font-black tracking-tight">{value}</p>
+                <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[.08em] text-slate-400">{label}</p>
+              </div>;
+            })}
           </div>
         </div>
       </section>
 
-      <section id="semesters" className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
-        <div className="flex items-end justify-between gap-6">
+      <section id="semesters" className="mx-auto max-w-[1240px] px-5 py-20 lg:px-8">
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Browse by semester</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Choose your semester</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">Jump directly into subjects, syllabus, questions, notes and PYQs.</p>
+            <p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-600">01 / Navigate</p>
+            <h2 className="mt-2 text-3xl font-black tracking-[-.035em] sm:text-4xl">Choose a semester</h2>
+            <p className="mt-2 text-sm text-slate-500">Start with your year and continue into the subjects.</p>
           </div>
-          <span className="hidden rounded-full bg-white px-3 py-2 text-xs font-bold text-slate-500 ring-1 ring-slate-200 sm:block">Sem 1 — Sem 8</span>
+          <span className="text-xs font-bold text-slate-400">Semester 1 → 8</span>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
-          <Link
-            href="/semester/1-2"
-            className="group col-span-2 rounded-2xl border border-indigo-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-1 hover:border-indigo-300 hover:shadow-xl sm:col-span-2"
-          >
-            <span className="text-xs font-black text-indigo-500">01–02</span>
-            <div className="mt-8 flex items-end justify-between">
-              <div>
-                <span className="text-sm font-extrabold">Semester 1 & 2</span>
-                <p className="mt-1 text-xs font-semibold text-slate-400">Common syllabus</p>
-              </div>
-              <ArrowRight size={16} className="text-slate-400 transition group-hover:translate-x-1 group-hover:text-slate-950" />
-            </div>
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Link href="/semester/1-2" className="group relative overflow-hidden rounded-3xl border border-indigo-100 bg-indigo-50 p-6 lg:col-span-2">
+            <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-indigo-200/50" />
+            <span className="relative text-[11px] font-black uppercase tracking-[.15em] text-indigo-600">01 — 02</span>
+            <h3 className="relative mt-10 text-2xl font-black tracking-tight">Semester 1 & 2</h3>
+            <p className="relative mt-2 text-sm font-semibold text-indigo-900/55">Common foundation syllabus</p>
+            <ArrowRight className="relative mt-8 text-indigo-600 transition group-hover:translate-x-1" size={19} />
           </Link>
-          {semesters.slice(2).map((sem) => (
-            <Link
-              key={sem.number}
-              href={`/semester/${sem.number}`}
-              className="group rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
-            >
-              <span className="text-xs font-black text-slate-400">0{sem.number}</span>
-              <div className="mt-8 flex items-end justify-between">
-                <span className="text-sm font-extrabold">{sem.label}</span>
-                <ArrowRight size={16} className="translate-x-0 text-slate-400 transition group-hover:translate-x-1 group-hover:text-slate-950" />
+          {semesters.slice(2).map((s) => (
+            <Link key={s.number} href={"/semester/"+s.number} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
+              <span className="text-[11px] font-black uppercase tracking-[.15em] text-slate-400">0{s.number}</span>
+              <h3 className="mt-10 text-lg font-black">{s.title}</h3>
+              <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
+                <span className="text-xs font-bold text-slate-400">View semester</span>
+                <ArrowRight size={16} className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-slate-950" />
               </div>
             </Link>
           ))}
         </div>
       </section>
 
+      <section id="branches" className="border-y border-slate-200 bg-white">
+        <div className="mx-auto max-w-[1240px] px-5 py-20 lg:px-8">
+          <div className="max-w-2xl">
+            <p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-600">02 / Branches</p>
+            <h2 className="mt-2 text-3xl font-black tracking-[-.035em] sm:text-4xl">Built around your branch</h2>
+            <p className="mt-3 text-sm leading-6 text-slate-500">For Semester 3 onwards, select the branch to see its subject structure and study resources.</p>
+          </div>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {getBranches().map((b) => (
+              <div key={b.slug} className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5">
+                <span className="text-[10px] font-black uppercase tracking-[.15em] text-indigo-600">{b.code}</span>
+                <h3 className="mt-3 text-sm font-black leading-5">{b.name}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="resources" className="mx-auto max-w-[1240px] px-5 py-20 lg:px-8">
+        <div className="rounded-[32px] bg-[#111827] p-7 text-white sm:p-10">
+          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-300">03 / Resources</p>
+              <h2 className="mt-3 max-w-2xl text-3xl font-black tracking-tight sm:text-4xl">Everything stays organized by subject.</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">Open a subject and continue to its study resources. The portal is designed to keep the path from semester → branch → subject simple.</p>
+            </div>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-3">
+              {["Notes","Questions","PYQs"].map((item) => <div key={item} className="rounded-2xl bg-white/8 px-4 py-5 text-center ring-1 ring-white/10"><CheckCircle2 size={17} className="mx-auto text-indigo-300" /><p className="mt-2 text-xs font-extrabold">{item}</p></div>)}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 py-8 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-          <p>© 2026 JIET Exam Prep</p>
-          <p>Made for students, organized for exams.</p>
+        <div className="mx-auto flex max-w-[1240px] flex-col gap-2 px-5 py-8 text-xs font-semibold text-slate-400 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <p>© 2026 JIET Exam Prep</p><p>Academic resources, organized simply.</p>
         </div>
       </footer>
     </main>
