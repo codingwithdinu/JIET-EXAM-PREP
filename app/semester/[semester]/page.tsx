@@ -1,128 +1,58 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, BookOpen, GraduationCap } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Layers3 } from "lucide-react";
+import SiteHeader from "@/components/SiteHeader";
 import { getBranches, getSubjects, semesters } from "@/lib/data";
 
 export function generateStaticParams() {
-  return semesters.map((semester) => ({ semester: String(semester.number) }));
+  return [...semesters.map(s => ({ semester: String(s.number) })), { semester: "1-2" }];
 }
 
 export default async function SemesterPage({ params }: { params: Promise<{ semester: string }> }) {
   const { semester: semesterParam } = await params;
-  const isCommonFoundation = semesterParam === "1-2";
-  const number = isCommonFoundation ? 1 : Number(semesterParam);
-  const semester = isCommonFoundation ? { number: 0, title: "Semester 1 & 2", description: "Common first-year syllabus for Semester 1 and Semester 2." } : semesters.find((item) => item.number === number);
+  const common = semesterParam === "1-2";
+  const number = common ? 1 : Number(semesterParam);
+  const semester = common
+    ? { title: "Semester 1 & 2", description: "Common foundation syllabus for the first year." }
+    : semesters.find(s => s.number === number);
 
-  if (!semester) {
-    return (
-      <main className="grid min-h-screen place-items-center bg-[#f7f8fc] px-5">
-        <div className="text-center">
-          <h1 className="text-3xl font-black">Semester not found</h1>
-          <Link href="/" className="mt-5 inline-flex rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white">Back home</Link>
-        </div>
-      </main>
-    );
-  }
+  if (!semester) return <main className="grid min-h-screen place-items-center"><div className="text-center"><h1 className="text-3xl font-black">Semester not found</h1><Link className="mt-4 inline-block font-bold" href="/">Back home</Link></div></main>;
 
-  const hasBranches = !isCommonFoundation && number >= 3;
   const branches = getBranches();
-  const subjects = isCommonFoundation ? [...getSubjects(1), ...getSubjects(2)] : getSubjects(number);
+  const subjects = common ? [...getSubjects(1), ...getSubjects(2)] : getSubjects(number);
 
-  return (
-    <main className="min-h-screen bg-[#f7f8fc] text-slate-950">
-      <header className="border-b border-slate-200/80 bg-white">
-        <div className="mx-auto max-w-7xl px-5 py-5 lg:px-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-slate-950">
-            <ArrowLeft size={16} /> Back to home
-          </Link>
-          <div className="mt-8 flex items-start gap-4">
-            <div className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white">
-              <GraduationCap size={25} />
-            </div>
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">JIET Exam Prep</p>
-              <h1 className="mt-1 text-4xl font-black tracking-tight">{semester.title}</h1>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">{semester.description}</p>
-            </div>
-          </div>
+  return <main className="min-h-screen bg-[#f6f7fb]">
+    <SiteHeader />
+    <section className="border-b border-slate-200 bg-white">
+      <div className="mx-auto max-w-[1240px] px-5 py-10 lg:px-8">
+        <Link href="/" className="inline-flex items-center gap-2 text-xs font-extrabold text-slate-400 hover:text-slate-900"><ArrowLeft size={14}/> Home</Link>
+        <div className="mt-8 max-w-3xl">
+          <p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-600">Semester portal</p>
+          <h1 className="mt-2 text-4xl font-black tracking-[-.04em] sm:text-5xl">{semester.title}</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-500">{semester.description}</p>
         </div>
-      </header>
+      </div>
+    </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
-        {hasBranches ? (
-          <>
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Choose your branch</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight">Select branch to continue</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                Every branch has its own subjects, Notes, Lab Notes, Important Questions and PYQs.
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {branches.map((branch) => (
-                <Link
-                  key={branch.slug}
-                  href={`/semester/${number}/branch/${branch.slug}`}
-                  className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
-                >
-                  <span className="inline-flex rounded-full bg-indigo-50 px-3 py-1 text-xs font-black text-indigo-700">{branch.code}</span>
-                  <h3 className="mt-4 min-h-12 text-lg font-black leading-6">{branch.name}</h3>
-                  <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
-                    <span className="text-xs font-bold text-slate-500">Open branch</span>
-                    <ArrowRight size={17} className="text-slate-400 transition group-hover:translate-x-1 group-hover:text-slate-950" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-              <div className="mb-4">
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Study resources</p>
-                <h2 className="mt-1 text-xl font-black">What do you want to study?</h2>
-              </div>
-            </div>
-
-            <div className="mt-12 flex items-end justify-between">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">Subjects</p>
-                <h2 className="mt-2 text-3xl font-black tracking-tight">Choose a subject</h2>
-              </div>
-              <span className="rounded-full bg-white px-3 py-2 text-xs font-bold text-slate-500 ring-1 ring-slate-200">{subjects.length} subjects</span>
-            </div>
-
-            {subjects.length ? (
-              <div className="mt-8 grid gap-5 md:grid-cols-2">
-                {subjects.map((subject) => (
-                  <div key={subject.slug} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl">
-                    <Link href={`/semester/${isCommonFoundation ? 1 : number}/${subject.slug}`} className="group block">
-                      <div className="flex items-start justify-between gap-5">
-                        <div>
-                          <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-700">{subject.code}</span>
-                          <h3 className="mt-4 text-xl font-black tracking-tight">{subject.name}</h3>
-                          <p className="mt-2 text-sm leading-6 text-slate-500">{subject.description}</p>
-                        </div>
-                        <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-950 text-white transition group-hover:scale-105">
-                          <ArrowRight size={18} />
-                        </div>
-                      </div>
-                    </Link>
-                    <div className="mt-6 border-t border-slate-100 pt-5">
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="mt-8 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center">
-                <BookOpen className="mx-auto text-slate-300" size={30} />
-                <h3 className="mt-4 text-lg font-black">Content coming soon</h3>
-                <p className="mt-2 text-sm text-slate-500">Subjects and their resources for this semester will be added here.</p>
-              </div>
-            )}
-          </>
-        )}
-      </section>
-    </main>
-  );
+    <section className="mx-auto max-w-[1240px] px-5 py-12 lg:px-8">
+      {!common && number >= 3 ? <>
+        <div className="flex items-end justify-between gap-4">
+          <div><p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-600">Select branch</p><h2 className="mt-2 text-2xl font-black">Continue with your branch</h2></div>
+          <span className="hidden rounded-full bg-white px-3 py-2 text-[11px] font-bold text-slate-400 ring-1 ring-slate-200 sm:block">{branches.length} branches</span>
+        </div>
+        <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {branches.map(b => <Link key={b.slug} href={`/semester/${number}/branch/${b.slug}`} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <span className="text-[10px] font-black uppercase tracking-[.15em] text-indigo-600">{b.code}</span>
+            <h3 className="mt-4 min-h-12 text-base font-black leading-6">{b.name}</h3>
+            <div className="mt-7 flex items-center justify-between border-t border-slate-100 pt-4"><span className="text-xs font-bold text-slate-400">Open branch</span><ArrowRight size={16} className="text-slate-300 group-hover:translate-x-1 group-hover:text-slate-950"/></div>
+          </Link>)}
+        </div>
+      </> : <>
+        <div className="flex items-end justify-between"><div><p className="text-[11px] font-black uppercase tracking-[.18em] text-indigo-600">Subjects</p><h2 className="mt-2 text-2xl font-black">Foundation subjects</h2></div><span className="rounded-full bg-white px-3 py-2 text-[11px] font-bold text-slate-400 ring-1 ring-slate-200">{subjects.length} subjects</span></div>
+        {subjects.length ? <div className="mt-7 grid gap-4 md:grid-cols-2">{subjects.map(s => <Link key={s.slug} href={`/semester/${number}/${s.slug}`} className="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+          <div className="flex items-start justify-between gap-5"><div><span className="rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black text-slate-600">{s.code}</span><h3 className="mt-4 text-lg font-black">{s.name}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{s.description}</p></div><div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-slate-950 text-white group-hover:bg-indigo-600"><ArrowRight size={16}/></div></div>
+        </Link>)}</div> : <div className="mt-7 rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center"><BookOpen className="mx-auto text-slate-300"/><h3 className="mt-4 font-black">Subjects coming soon</h3><p className="mt-2 text-sm text-slate-500">This semester structure is ready for academic content.</p></div>}
+      </>}
+      <Link href="/" className="mt-10 inline-flex items-center gap-2 text-xs font-extrabold text-slate-400 hover:text-slate-900"><ArrowLeft size={14}/> Back to semesters</Link>
+    </section>
+  </main>;
 }
