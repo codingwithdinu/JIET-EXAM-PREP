@@ -50,7 +50,7 @@ export default async function SemesterPage({
         new Map(
           subjects
             .filter((subject) => subject.kind === "lab")
-            .map((subject) => [subject.slug, subject])
+            .map((subject) => [subject.name, subject])
         ).values()
       )
     : [];
