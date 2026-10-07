@@ -213,18 +213,22 @@ export default async function SemesterPage({
             </p>
           </div>
 
-          {common && (
-            <a
-              href="https://drive.google.com/file/d/1IS4lMPler_dUiZ1oCJaXtPszjiH3uixo/view?usp=drive_link"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Open Semester Syllabus in Google Drive"
-              className="inline-flex shrink-0 items-center justify-center gap-3 rounded-2xl bg-slate-950 px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-indigo-600 hover:shadow-xl"
-            >
-              <span>Sem Syllabus</span>
-              <ArrowRight size={16} />
-            </a>
-          )}
+          <a
+            href={
+              common
+                ? "https://drive.google.com/file/d/1IS4lMPler_dUiZ1oCJaXtPszjiH3uixo/view?usp=drive_link"
+                : `https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(
+                    `JIET Semester ${number} Syllabus`
+                  )}`
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`Open Semester ${common ? "1 & 2" : number} Syllabus in Google Drive`}
+            className="inline-flex shrink-0 items-center justify-center gap-3 rounded-2xl bg-slate-950 px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-slate-950/10 transition hover:-translate-y-0.5 hover:bg-indigo-600 hover:shadow-xl"
+          >
+            <span>Sem Syllabus</span>
+            <ArrowRight size={16} />
+          </a>
         </div>
         </div>
       </section>
