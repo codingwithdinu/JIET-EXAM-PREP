@@ -73,18 +73,17 @@ export default function Home() {
 
           <div className="mt-12 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-4">
             {[
-              [String(semesters.length).padStart(2,"0"), "Semesters", GraduationCap],
-              [String(branchCount).padStart(2,"0"), "Branches", Layers3],
-              [String(populatedSubjects).padStart(2,"0"), "Subjects", BookOpen],
-              ["04", "Core resources", FileQuestion],
-            ].map(([value,label,Icon]) => {
-              const I = Icon as typeof BookOpen;
-              return <div key={String(label)} className="rounded-2xl border border-white/80 bg-white/80 p-4 shadow-sm backdrop-blur">
-                <I size={17} className="text-indigo-600" />
+              { value: String(semesters.length).padStart(2, "0"), label: "Semesters", icon: GraduationCap },
+              { value: String(branchCount).padStart(2, "0"), label: "Branches", icon: Layers3 },
+              { value: String(populatedSubjects).padStart(2, "0"), label: "Subjects", icon: BookOpen },
+              { value: "04", label: "Core resources", icon: FileQuestion },
+            ].map(({ value, label, icon: Icon }) => (
+              <div key={label} className="rounded-2xl border border-white/80 bg-white/80 p-4 shadow-sm backdrop-blur">
+                <Icon size={17} className="text-indigo-600" />
                 <p className="mt-3 text-2xl font-black tracking-tight">{value}</p>
                 <p className="mt-0.5 text-[11px] font-bold uppercase tracking-[.08em] text-slate-400">{label}</p>
-              </div>;
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </section>
