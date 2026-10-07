@@ -108,9 +108,14 @@ export default function Home() {
                 <div className="search-results">
                   {results.length ? (
                     results.map(({ subject, href, meta }) => (
-                      <Link
+                      <a
                         key={href}
-                        href={href}
+                        href={
+                          subject.driveUrl ||
+                          `https://drive.google.com/drive/u/0/search?q=${encodeURIComponent(subject.name)}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
                         onClick={() => setQuery("")}
                         className="search-result"
                       >
@@ -124,7 +129,7 @@ export default function Home() {
                           </small>
                         </span>
                         <ChevronRight size={17} />
-                      </Link>
+                      </a>
                     ))
                   ) : (
                     <div className="search-empty">
