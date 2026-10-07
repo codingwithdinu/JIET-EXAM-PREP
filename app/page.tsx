@@ -196,6 +196,7 @@ export default function Home() {
               <span>Semester · Branch · Subject</span>
             </div>
           </div>
+        </div>
       </div>
 
       <section className="section-block section-tight">
